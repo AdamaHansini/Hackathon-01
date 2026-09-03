@@ -89,7 +89,7 @@ const searchPosts = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     data: {
-      posts,
+      items: posts,
       query: { q, type, category, city, color, brand, dateFrom, dateTo },
       pagination: {
         page: Number(page),

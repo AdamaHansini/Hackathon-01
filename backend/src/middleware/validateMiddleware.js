@@ -212,8 +212,8 @@ const validateSendMessage = [
 const validateSearch = [
   query('page').optional().isInt({ min: 1 }).withMessage('Page must be a positive integer').toInt(),
   query('limit').optional().isInt({ min: 1, max: 50 }).withMessage('Limit must be 1–50').toInt(),
-  query('type').optional().isIn(['LOST', 'FOUND']).withMessage('Type must be LOST or FOUND'),
-  query('category').optional().isIn([...VALID_CATEGORIES, '']),
+  query('type').optional({ values: 'falsy' }).isIn(['LOST', 'FOUND']).withMessage('Type must be LOST or FOUND'),
+  query('category').optional({ values: 'falsy' }).isIn(VALID_CATEGORIES).withMessage('Invalid category'),
   validate,
 ];
 

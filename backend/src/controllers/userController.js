@@ -118,11 +118,11 @@ const getDashboard = asyncHandler(async (req, res) => {
         reportsAgainst: user.reportsAgainstCount,
       },
       stats: {
-        lostPostsCount,
-        foundPostsCount,
-        pendingClaimsCount,
+        activeLostPosts: lostPostsCount,
+        activeFoundPosts: foundPostsCount,
+        pendingClaims: pendingClaimsCount,
         approvedClaimsCount,
-        potentialMatchesCount: matchesCount,
+        potentialMatches: matchesCount,
         unreadNotificationsCount,
       },
       recentActivity,
@@ -148,7 +148,7 @@ const getMyPosts = asyncHandler(async (req, res) => {
 
   res.json({
     success: true,
-    data: { posts, pagination: { page: Number(page), limit: Number(limit), total, pages: Math.ceil(total / limit) } },
+    data: { items: posts, pagination: { page: Number(page), limit: Number(limit), total, pages: Math.ceil(total / limit) } },
   });
 });
 
