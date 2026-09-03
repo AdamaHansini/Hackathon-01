@@ -73,6 +73,9 @@ const createClaim = asyncHandler(async (req, res) => {
 
   // Update post status
   await ItemPost.findByIdAndUpdate(foundPostId, { status: 'CLAIMED' });
+  if (relatedLostPostId) {
+    await ItemPost.findByIdAndUpdate(relatedLostPostId, { status: 'CLAIMED' });
+  }
 
   // Update match status if applicable
   if (matchId) {
@@ -182,11 +185,11 @@ const verifyClaim = asyncHandler(async (req, res) => {
 
   const { answers } = req.body;
 
-  // Get the related lost post's verification questions
-  const lostPostId = claim.relatedLostPostId;
+  // Get the found post's verification questions (since questions are set by the finder)
+  const foundPostId = claim.foundPostId;
 
   const { passed, correctCount, totalQuestions, results, autoPass } = await verifyAnswers(
-    lostPostId,
+    foundPostId,
     answers
   );
 
@@ -267,6 +270,17 @@ const cancelClaim = asyncHandler(async (req, res) => {
     await ItemPost.findByIdAndUpdate(claim.foundPostId, { status: 'ACTIVE' });
   }
 
+  if (claim.relatedLostPostId) {
+    const otherLostClaims = await Claim.countDocuments({
+      relatedLostPostId: claim.relatedLostPostId,
+      status: { $nin: ['CANCELLED', 'REJECTED'] },
+      _id: { $ne: claim._id },
+    });
+    if (otherLostClaims === 0) {
+      await ItemPost.findByIdAndUpdate(claim.relatedLostPostId, { status: 'ACTIVE' });
+    }
+  }
+
   res.json({ success: true, message: 'Claim cancelled.' });
 });
 
@@ -311,6 +325,9 @@ const approveClaim = asyncHandler(async (req, res) => {
 
   // Update post status to VERIFIED
   await ItemPost.findByIdAndUpdate(claim.foundPostId, { status: 'VERIFIED' });
+  if (claim.relatedLostPostId) {
+    await ItemPost.findByIdAndUpdate(claim.relatedLostPostId, { status: 'VERIFIED' });
+  }
 
   // Reject all other claims for this found post
   await Claim.updateMany(
@@ -381,6 +398,16 @@ const rejectClaim = asyncHandler(async (req, res) => {
     await ItemPost.findByIdAndUpdate(claim.foundPostId, { status: 'ACTIVE' });
   }
 
+  if (claim.relatedLostPostId) {
+    const otherLostClaims = await Claim.countDocuments({
+      relatedLostPostId: claim.relatedLostPostId,
+      status: { $nin: ['CANCELLED', 'REJECTED', 'COMPLETED'] },
+    });
+    if (otherLostClaims === 0) {
+      await ItemPost.findByIdAndUpdate(claim.relatedLostPostId, { status: 'ACTIVE' });
+    }
+  }
+
   await auditFromRequest(req, {
     action: 'CLAIM_REJECTED',
     entityType: 'Claim',
@@ -448,6 +475,10 @@ const completeHandover = asyncHandler(async (req, res) => {
     { status: 'RETURNED', returnedAt: new Date() },
     { new: true }
   );
+
+  if (claim.relatedLostPostId) {
+    await ItemPost.findByIdAndUpdate(claim.relatedLostPostId, { status: 'RETURNED', returnedAt: new Date() });
+  }
 
   // Update trust scores
   await onSuccessfulReturn(claim.foundPostOwnerId);

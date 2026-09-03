@@ -16,7 +16,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, className }) =
         return 'bg-warning/10 text-warning border-warning/20';
       case 'CLAIMED':
       case 'VERIFIED':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+        return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
       case 'RETURNED':
         return 'bg-primary-button/10 text-primary-button border-primary-button/20';
       case 'EXPIRED':
@@ -24,12 +24,12 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, className }) =
       case 'REMOVED':
         return 'bg-error/10 text-error border-error/20';
       case 'DISPUTED':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
+        return 'bg-orange-500/10 text-orange-400 border-orange-500/20';
       case 'SUGGESTED':
       case 'PENDING':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
       case 'UNDER_REVIEW':
-        return 'bg-indigo-100 text-indigo-800 border-indigo-200';
+        return 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20';
       case 'APPROVED':
         return 'bg-success/10 text-success border-success/20';
       case 'REJECTED':
@@ -37,7 +37,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, className }) =
       case 'COMPLETED':
         return 'bg-primary-button/10 text-primary-button border-primary-button/20';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-surface text-muted-text border-taupe-border';
     }
   };
 

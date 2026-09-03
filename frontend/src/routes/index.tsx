@@ -14,6 +14,7 @@ import { MyPosts } from '../pages/user/MyPosts';
 import { ManagePost } from '../pages/user/ManagePost';
 import { SmartMatches } from '../pages/user/SmartMatches';
 import { Claims } from '../pages/user/Claims';
+import { ClaimPost } from '../pages/user/ClaimPost';
 import { Messages } from '../pages/user/Messages';
 import { Notifications } from '../pages/user/Notifications';
 import { ProfileSettings } from '../pages/user/ProfileSettings';
@@ -78,6 +79,10 @@ export const router = createBrowserRouter([
       {
         path: 'posts/create',
         element: <CreatePost />,
+      },
+      {
+        path: 'posts/:id/claim',
+        element: <ClaimPost />,
       },
       {
         path: 'matches',

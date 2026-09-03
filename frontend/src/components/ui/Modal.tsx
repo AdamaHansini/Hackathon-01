@@ -25,7 +25,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-dark-text/40 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/40">
       <div 
         className="absolute inset-0 z-0" 
         onClick={onClose}
@@ -33,7 +33,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, 
       />
       <div 
         className={cn(
-          "relative z-10 w-full max-w-lg rounded-xl bg-surface p-6 shadow-xl overflow-hidden",
+          "relative z-10 w-full max-w-lg rounded-xl bg-surface p-6 border border-taupe-border overflow-hidden",
           className
         )}
         role="dialog"

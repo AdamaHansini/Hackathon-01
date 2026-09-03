@@ -38,6 +38,10 @@ export const ManagePost: React.FC = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [editForm, setEditForm] = useState<Record<string, any>>({});
+  
+  const [isAddingQuestion, setIsAddingQuestion] = useState(false);
+  const [newQuestion, setNewQuestion] = useState('');
+  const [newAnswer, setNewAnswer] = useState('');
 
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['manage-post', id],
@@ -50,6 +54,34 @@ export const ManagePost: React.FC = () => {
     queryFn: () => postsApi.getPostClaims(id!),
     enabled: !!id,
   });
+
+  const isLost = data?.data?.post?.type === 'LOST';
+
+  const { data: vqData, refetch: refetchVq } = useQuery({
+    queryKey: ['verification-questions', id],
+    queryFn: () => postsApi.getVerificationQuestions(id!),
+    enabled: !!id && !isLost,
+  });
+
+  const handleAddQuestion = async () => {
+    if (!newQuestion.trim() || !newAnswer.trim()) {
+      toast.error('Question and answer are required');
+      return;
+    }
+    setIsSaving(true);
+    try {
+      await postsApi.addVerificationQuestion(id!, { question: newQuestion, answer: newAnswer });
+      toast.success('Verification question added');
+      setNewQuestion('');
+      setNewAnswer('');
+      setIsAddingQuestion(false);
+      refetchVq();
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to add question');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -76,7 +108,6 @@ export const ManagePost: React.FC = () => {
   }
 
   const post = data.data.post;
-  const isLost = post.type === 'LOST';
 
   const openEditModal = () => {
     setEditForm({
@@ -262,27 +293,65 @@ export const ManagePost: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-surface border border-taupe-border rounded-xl p-6">
-              <h2 className="text-lg font-semibold text-dark-text mb-4">Verification Questions</h2>
-              <p className="text-sm text-muted-text mb-4">
-                {isLost
-                  ? 'Add questions that only the true finder would know (e.g., "What color is the case?").'
-                  : 'Add questions that only the true owner would know (e.g., "What is the lock screen wallpaper?").'}
-              </p>
+            {!isLost && (
+              <div className="bg-surface border border-taupe-border rounded-xl p-6">
+                <h2 className="text-lg font-semibold text-dark-text mb-4">Verification Questions</h2>
+                <p className="text-sm text-muted-text mb-4">
+                  Add questions that only the true owner would know (e.g., "What is the lock screen wallpaper?").
+                </p>
 
-              <div className="bg-light-beige border border-dashed border-taupe-border rounded-lg p-8 flex flex-col items-center justify-center text-center">
-                <ShieldCheck className="h-8 w-8 text-muted-text/50 mb-3" />
-                <p className="text-sm font-medium text-dark-text mb-1">
-                  No verification questions added
-                </p>
-                <p className="text-xs text-muted-text mb-4">
-                  Adding questions helps prevent fraudulent claims.
-                </p>
-                <Button variant="secondary" size="sm">
-                  Add Question
-                </Button>
+                {vqData?.data?.questions && vqData.data.questions.length > 0 ? (
+                  <div className="space-y-4 mb-4">
+                    {vqData.data.questions.map((q: any) => (
+                      <div key={q._id} className="bg-light-beige border border-taupe-border rounded-lg p-4">
+                        <p className="text-sm font-medium text-dark-text">{q.question}</p>
+                      </div>
+                    ))}
+                    {vqData.data.questions.length < 3 && !isAddingQuestion && (
+                      <Button variant="secondary" size="sm" onClick={() => setIsAddingQuestion(true)}>
+                        Add Another Question
+                      </Button>
+                    )}
+                  </div>
+                ) : (
+                  !isAddingQuestion && (
+                    <div className="bg-light-beige border border-dashed border-taupe-border rounded-lg p-8 flex flex-col items-center justify-center text-center mb-4">
+                      <ShieldCheck className="h-8 w-8 text-muted-text/50 mb-3" />
+                      <p className="text-sm font-medium text-dark-text mb-1">
+                        No verification questions added
+                      </p>
+                      <p className="text-xs text-muted-text mb-4">
+                        Adding questions helps prevent fraudulent claims.
+                      </p>
+                      <Button variant="secondary" size="sm" onClick={() => setIsAddingQuestion(true)}>
+                        Add Question
+                      </Button>
+                    </div>
+                  )
+                )}
+
+                {isAddingQuestion && (
+                  <div className="bg-light-beige border border-taupe-border rounded-lg p-4 space-y-4">
+                    <Input
+                      label="Question"
+                      placeholder="e.g. What color is the lock screen wallpaper?"
+                      value={newQuestion}
+                      onChange={(e) => setNewQuestion(e.target.value)}
+                    />
+                    <Input
+                      label="Answer (Keep it simple)"
+                      placeholder="e.g. Red"
+                      value={newAnswer}
+                      onChange={(e) => setNewAnswer(e.target.value)}
+                    />
+                    <div className="flex justify-end gap-2">
+                      <Button variant="ghost" size="sm" onClick={() => setIsAddingQuestion(false)}>Cancel</Button>
+                      <Button size="sm" onClick={handleAddQuestion} isLoading={isSaving}>Save Question</Button>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
+            )}
           </div>
 
           {/* Sidebar */}

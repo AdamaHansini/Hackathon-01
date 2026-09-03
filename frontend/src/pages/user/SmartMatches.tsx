@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSearchParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { matchesApi } from '../../api/matchesApi';
 import { PostCard } from '../../components/posts/PostCard';
@@ -8,17 +9,19 @@ import { EmptyState } from '../../components/ui/EmptyState';
 import { Pagination } from '../../components/ui/Pagination';
 import { Select } from '../../components/ui/Select';
 import { Handshake, AlertTriangle, ChevronRight, Check } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
 
 export const SmartMatches: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const postId = searchParams.get('postId') || undefined;
+
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState('SUGGESTED');
   const limit = 10;
 
   const { data: queryData, isLoading, isError, error, refetch, isFetching } = useQuery({
-    queryKey: ['my-matches', page, status],
-    queryFn: () => matchesApi.getMatches({ page, limit, status }),
+    queryKey: ['my-matches', page, status, postId],
+    queryFn: () => matchesApi.getMatches({ page, limit, status, postId }),
   });
   
   const data = queryData as any;
@@ -59,11 +62,11 @@ export const SmartMatches: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3 items-start mb-6">
-        <AlertTriangle className="h-5 w-5 text-blue-600 shrink-0 mt-0.5" />
-        <div className="text-sm text-blue-900">
+      <div className="bg-surface border border-taupe-border rounded-xl p-4 flex gap-3 items-start mb-6">
+        <AlertTriangle className="h-5 w-5 text-warning shrink-0 mt-0.5" />
+        <div className="text-sm text-dark-text">
           <p className="font-semibold mb-1">Important: These are only suggestions.</p>
-          <p className="text-blue-800/80">
+          <p className="text-muted-text">
             The Smart Match system uses AI to find potential matches based on location, time, and description. 
             It does not guarantee ownership. You must still verify claims carefully.
           </p>
@@ -82,12 +85,12 @@ export const SmartMatches: React.FC = () => {
         <>
           <div className={`space-y-6 transition-opacity duration-200 ${isFetching ? 'opacity-50' : 'opacity-100'}`}>
             {data.data.items.map((match: any) => (
-              <div key={match._id} className="bg-surface rounded-xl border border-taupe-border overflow-hidden shadow-sm flex flex-col md:flex-row">
+              <div key={match._id} className="bg-surface rounded-xl border border-taupe-border overflow-hidden flex flex-col md:flex-row">
                 {/* Match Score Strip */}
                 <div className="md:w-32 bg-light-beige flex flex-row md:flex-col items-center justify-center p-4 border-b md:border-b-0 md:border-r border-taupe-border">
                   <span className="text-xs font-semibold text-muted-text uppercase tracking-wider mb-0 md:mb-2 mr-3 md:mr-0">Match Score</span>
-                  <div className={`flex items-center justify-center h-16 w-16 rounded-full border-4 ${getScoreColor(match.similarityScore)}`}>
-                    <span className="text-xl font-bold">{Math.round(match.similarityScore)}%</span>
+                  <div className={`flex items-center justify-center px-3 py-1 rounded border ${getScoreColor(match.similarityScore)}`}>
+                    <span className="text-sm font-medium">{Math.round(match.similarityScore)}%</span>
                   </div>
                 </div>
 

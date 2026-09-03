@@ -172,14 +172,14 @@ export const PublicPostDetails: React.FC = () => {
           
           <div className="mt-auto">
             {!isOwner && post.status === 'ACTIVE' && (
-              <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 mb-4">
+              <div className="bg-surface border border-taupe-border rounded-xl p-5 mb-4 shadow-sm">
                 <div className="flex items-start gap-3">
-                  <ShieldCheck className="h-5 w-5 text-blue-600 shrink-0 mt-0.5" />
+                  <ShieldCheck className="h-5 w-5 text-primary-button shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-sm font-semibold text-blue-900 mb-1">
+                    <h4 className="text-sm font-semibold text-dark-text mb-1">
                       {isLost ? 'Found this item?' : 'Is this your item?'}
                     </h4>
-                    <p className="text-xs text-blue-800/80 mb-3 leading-relaxed">
+                    <p className="text-xs text-muted-text mb-3 leading-relaxed">
                       {isLost 
                         ? 'Initiate a claim to connect with the owner. You will need to provide proof or answer verification questions to ensure a safe return.'
                         : 'Initiate a claim to verify ownership. The finder has set up verification questions to ensure the item goes to its rightful owner.'}

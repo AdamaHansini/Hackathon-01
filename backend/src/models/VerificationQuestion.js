@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const verificationQuestionSchema = new mongoose.Schema(
   {
-    lostPostId: {
+    postId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'ItemPost',
       required: true,
@@ -42,7 +42,7 @@ const verificationQuestionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-verificationQuestionSchema.index({ lostPostId: 1, order: 1 });
+verificationQuestionSchema.index({ postId: 1, order: 1 });
 
 const VerificationQuestion = mongoose.model('VerificationQuestion', verificationQuestionSchema);
 module.exports = VerificationQuestion;

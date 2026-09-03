@@ -33,8 +33,8 @@ const isAttemptLimitExceeded = async (foundPostId, claimantId) => {
  * Get active verification questions for a lost post.
  * Does NOT return answer hashes.
  */
-const getQuestionsForPost = async (lostPostId) => {
-  return VerificationQuestion.find({ lostPostId, isActive: true })
+const getQuestionsForPost = async (postId) => {
+  return VerificationQuestion.find({ postId, isActive: true })
     .select('_id question order')
     .sort({ order: 1 })
     .lean();
@@ -43,14 +43,14 @@ const getQuestionsForPost = async (lostPostId) => {
 /**
  * Verify submitted answers against stored hashes.
  *
- * @param {string} lostPostId  - Lost post that has the verification questions
+ * @param {string} postId  - Post that has the verification questions
  * @param {Array} submittedAnswers - [{ questionId, answer }]
  * @returns {{ passed, correctCount, totalQuestions, results }}
  */
-const verifyAnswers = async (lostPostId, submittedAnswers) => {
+const verifyAnswers = async (postId, submittedAnswers) => {
   // Fetch questions WITH their answer hashes (select: false fields require explicit selection)
   const questions = await VerificationQuestion.find({
-    lostPostId,
+    postId,
     isActive: true,
   }).select('+answerHash');
 

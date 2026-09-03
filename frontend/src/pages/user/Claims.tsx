@@ -85,17 +85,17 @@ export const Claims: React.FC = () => {
             <Skeleton key={i} className="h-32 w-full rounded-xl" />
           ))}
         </div>
-      ) : data?.data?.items && data.data.items.length > 0 ? (
+      ) : data?.data?.claims && data.data.claims.length > 0 ? (
         <>
           <div className={`space-y-4 transition-opacity duration-200 ${isFetching ? 'opacity-50' : 'opacity-100'}`}>
-            {data.data.items.map((claim: any) => (
+            {data.data.claims.map((claim: any) => (
               <div key={claim._id} className="bg-surface rounded-xl border border-taupe-border overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                 <div className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
                   
                   <div className="flex items-start gap-4 flex-1">
                     <div className="h-16 w-16 bg-light-beige rounded-lg overflow-hidden shrink-0 border border-taupe-border">
-                      {claim.post?.images && claim.post.images.length > 0 ? (
-                        <img src={claim.post.images[0].url} alt={claim.post.itemName} className="h-full w-full object-cover" />
+                      {claim.foundPostId?.images && claim.foundPostId.images.length > 0 ? (
+                        <img src={claim.foundPostId.images[0].url} alt={claim.foundPostId.itemName} className="h-full w-full object-cover" />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center">
                           <CheckCircle2 className="h-6 w-6 text-muted-text/30" />
@@ -110,11 +110,11 @@ export const Claims: React.FC = () => {
                           {format(new Date(claim.createdAt), 'MMM d, yyyy')}
                         </span>
                       </div>
-                      <h3 className="text-lg font-semibold text-dark-text mb-1">{claim.post?.itemName || 'Unknown Item'}</h3>
+                      <h3 className="text-lg font-semibold text-dark-text mb-1">{claim.foundPostId?.itemName || 'Unknown Item'}</h3>
                       <p className="text-sm text-muted-text line-clamp-1">
                         {activeTab === 'incoming' 
-                          ? `Claimed by user ID: ${claim.claimer?._id ? claim.claimer._id.substring(0, 8) + '...' : 'Unknown'}` 
-                          : `Your claim on ${claim.post?.type === 'LOST' ? 'a lost' : 'a found'} item`}
+                          ? `Claimed by: ${claim.claimantId?.name || 'Unknown'}` 
+                          : `Your claim on a ${claim.foundPostId?.type?.toLowerCase() || 'found'} item`}
                       </p>
                     </div>
                   </div>

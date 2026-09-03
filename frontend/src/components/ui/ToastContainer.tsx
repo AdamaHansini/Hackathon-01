@@ -14,7 +14,7 @@ export const ToastContainer: React.FC = () => {
         <div
           key={toast.id}
           className={cn(
-            'flex items-start p-4 rounded-lg shadow-lg border pointer-events-auto transition-all animate-in slide-in-from-right-4',
+            'flex items-start p-4 rounded-lg border pointer-events-auto transition-all animate-in slide-in-from-right-4',
             toast.type === 'success' && 'bg-success/10 border-success/20 text-success',
             toast.type === 'error' && 'bg-error/10 border-error/20 text-error',
             toast.type === 'info' && 'bg-blue-50 border-blue-100 text-blue-800'

@@ -45,8 +45,8 @@ export const Dashboard: React.FC = () => {
       value: (stats?.activeLostPosts || 0) + (stats?.activeFoundPosts || 0),
       icon: Package,
       link: '/my-posts',
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100'
+      color: 'text-blue-400',
+      bgColor: 'bg-blue-500/10'
     },
     {
       title: 'Potential Matches',
@@ -61,8 +61,8 @@ export const Dashboard: React.FC = () => {
       value: stats?.pendingClaims || 0, // Fallback if missing
       icon: CheckCircle2,
       link: '/claims',
-      color: 'text-indigo-600',
-      bgColor: 'bg-indigo-100'
+      color: 'text-indigo-400',
+      bgColor: 'bg-indigo-500/10'
     },
     {
       title: 'Items Recovered',
@@ -81,7 +81,7 @@ export const Dashboard: React.FC = () => {
           <p className="text-muted-text mt-1">Here's an overview of your activity on LostLink.</p>
         </div>
         
-        <div className="flex items-center gap-3 bg-surface border border-taupe-border rounded-lg px-4 py-3 shadow-sm">
+        <div className="flex items-center gap-3 bg-surface border border-taupe-border rounded-lg px-4 py-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-light-beige">
             <ShieldCheck className="h-5 w-5 text-primary-button" />
           </div>
@@ -97,7 +97,7 @@ export const Dashboard: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((card, idx) => (
-          <div key={idx} className="bg-surface rounded-xl p-5 border border-taupe-border shadow-sm flex flex-col relative overflow-hidden group">
+          <div key={idx} className="bg-surface rounded-xl p-5 border border-taupe-border flex flex-col relative overflow-hidden group">
             {card.link ? (
               <Link to={card.link} className="absolute inset-0 z-10" aria-label={`View ${card.title}`} />
             ) : null}

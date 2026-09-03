@@ -57,8 +57,8 @@ export const ModeratorDashboard: React.FC = () => {
       title: 'Suspicious Activity',
       value: stats.suspiciousActivity || 0,
       icon: ShieldCheck,
-      color: 'text-indigo-600',
-      bgColor: 'bg-indigo-100',
+      color: 'text-indigo-400',
+      bgColor: 'bg-indigo-500/10',
       link: '/moderator/reports'
     },
     {
@@ -82,7 +82,7 @@ export const ModeratorDashboard: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((card, idx) => (
-          <div key={idx} className="bg-surface rounded-xl p-5 border border-taupe-border shadow-sm flex flex-col relative overflow-hidden group">
+          <div key={idx} className="bg-surface rounded-xl p-5 border border-taupe-border flex flex-col relative overflow-hidden group">
             {card.link ? (
               <Link to={card.link} className="absolute inset-0 z-10" aria-label={`View ${card.title}`} />
             ) : null}

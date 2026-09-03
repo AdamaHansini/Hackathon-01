@@ -1,21 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-background: #FAF7F2;
-  --color-surface: #FFFFFF;
-  --color-soft-nude: #EDE3D5;
-  --color-light-beige: #F3ECE3;
-  --color-taupe-border: #D8C8B8;
-  --color-primary-button: #735B4A;
-  --color-primary-hover: #5E493A;
-  --color-dark-text: #2E2722;
-  --color-muted-text: #7D7065;
-  --color-success: #5F806B;
-  --color-warning: #B58958;
-  --color-error: #A85D54;
+  --color-background: #262422;
+  --color-surface: #2B2A28;
+  --color-soft-nude: #312F2D;
+  --color-light-beige: #312F2D;
+  --color-taupe-border: #3D3A36;
+  --color-primary-button: #D97757;
+  --color-primary-hover: #C66547;
+  --color-dark-text: #EDEAE5;
+  --color-muted-text: #9C948A;
+  --color-success: #7C9082;
+  --color-warning: #C49A6C;
+  --color-error: #A86B62;
 
-  --font-sans: 'Outfit', sans-serif;
+  --font-sans: 'Inter', sans-serif;
 }
 
 @layer base {

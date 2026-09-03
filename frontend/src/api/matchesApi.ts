@@ -2,7 +2,7 @@ import { axiosClient } from './axiosClient';
 import { ApiResponse, PaginatedData } from '../types';
 
 export const matchesApi = {
-  getMatches: async (params?: any): Promise<ApiResponse<PaginatedData<any>>> => {
+  getMatches: async (params?: { page?: number, limit?: number, status?: string, postId?: string }): Promise<ApiResponse<PaginatedData<any>>> => {
     return axiosClient.get('/matches', { params });
   },
   getMatch: async (id: string): Promise<ApiResponse<{ match: any }>> => {

@@ -20,6 +20,17 @@ const listMatches = asyncHandler(async (req, res) => {
     ],
   };
 
+  const { postId } = req.query;
+  if (postId) {
+    if (!myPostIds.map(id => id.toString()).includes(postId)) {
+      return res.status(403).json({ success: false, message: 'Unauthorized access to matches' });
+    }
+    filter.$or = [
+      { lostPostId: postId },
+      { foundPostId: postId },
+    ];
+  }
+
   if (confidenceLevel) filter.confidenceLevel = confidenceLevel;
   if (status) filter.status = status;
 
@@ -36,10 +47,20 @@ const listMatches = asyncHandler(async (req, res) => {
     Match.countDocuments(filter),
   ]);
 
+  const formattedMatches = matches.map(m => {
+    const isLostMine = m.lostPostId && m.lostPostId.userId && m.lostPostId.userId.toString() === userId.toString();
+    return {
+      ...m,
+      similarityScore: m.score,
+      post1: isLostMine ? m.lostPostId : m.foundPostId,
+      post2: isLostMine ? m.foundPostId : m.lostPostId,
+    };
+  });
+
   res.json({
     success: true,
     data: {
-      matches,
+      items: formattedMatches,
       pagination: { page: Number(page), limit: Number(limit), total, pages: Math.ceil(total / Number(limit)) },
     },
   });

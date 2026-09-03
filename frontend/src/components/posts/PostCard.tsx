@@ -19,14 +19,14 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
   return (
     <Link 
       to={`/posts/${post._id}`}
-      className="group block overflow-hidden rounded-xl bg-surface border border-taupe-border shadow-sm hover:shadow-md transition-all hover:border-primary-button/30"
+      className="group block overflow-hidden rounded-xl bg-surface border border-taupe-border transition-opacity hover:opacity-90"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-light-beige">
         {post.images && post.images.length > 0 ? (
           <img 
             src={post.images[0].url} 
             alt={post.itemName}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-full object-cover"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">

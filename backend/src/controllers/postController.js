@@ -411,8 +411,8 @@ const addVerificationQuestion = asyncHandler(async (req, res) => {
   const post = await ItemPost.findById(req.params.id);
   if (!post) return res.status(404).json({ success: false, message: 'Post not found.' });
 
-  if (post.type !== 'LOST') {
-    return res.status(400).json({ success: false, message: 'Verification questions are only for LOST posts.' });
+  if (post.type !== 'FOUND') {
+    return res.status(400).json({ success: false, message: 'Verification questions are only for FOUND posts.' });
   }
 
   if (post.userId.toString() !== req.user._id.toString()) {
@@ -420,7 +420,7 @@ const addVerificationQuestion = asyncHandler(async (req, res) => {
   }
 
   const existing = await VerificationQuestion.countDocuments({
-    lostPostId: post._id,
+    postId: post._id,
     isActive: true,
   });
 
@@ -432,7 +432,7 @@ const addVerificationQuestion = asyncHandler(async (req, res) => {
   const answerHash = await hashVerificationAnswer(answer);
 
   const vq = await VerificationQuestion.create({
-    lostPostId: post._id,
+    postId: post._id,
     createdBy: req.user._id,
     question,
     answerHash,
@@ -457,7 +457,7 @@ const getVerificationQuestions = asyncHandler(async (req, res) => {
   const isModerator = ['MODERATOR', 'ADMIN'].includes(req.user.role);
 
   const questions = await VerificationQuestion.find({
-    lostPostId: post._id,
+    postId: post._id,
     isActive: true,
   })
     .select('_id question order isActive')
@@ -489,7 +489,7 @@ const updateVerificationQuestion = asyncHandler(async (req, res) => {
 
   const vq = await VerificationQuestion.findOne({
     _id: req.params.questionId,
-    lostPostId: post._id,
+    postId: post._id,
   });
 
   if (!vq) return res.status(404).json({ success: false, message: 'Question not found.' });
@@ -517,7 +517,7 @@ const deleteVerificationQuestion = asyncHandler(async (req, res) => {
   }
 
   await VerificationQuestion.findOneAndUpdate(
-    { _id: req.params.questionId, lostPostId: post._id },
+    { _id: req.params.questionId, postId: post._id },
     { isActive: false }
   );
 

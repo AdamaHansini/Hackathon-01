@@ -13,7 +13,7 @@ export const Landing: React.FC = () => {
           {/* Text Content */}
           <div className="text-left max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-soft-nude/50 text-primary-button text-sm font-medium mb-6 backdrop-blur-sm border border-taupe-border/50">
-              <span className="w-2 h-2 rounded-full bg-primary-button animate-pulse"></span>
+              <span className="w-2 h-2 rounded-full bg-primary-button"></span>
               The Intelligent Recovery Network
             </div>
             <h1 className="text-5xl font-bold tracking-tight text-dark-text sm:text-7xl mb-6 leading-tight">
@@ -24,12 +24,12 @@ export const Landing: React.FC = () => {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Link to="/posts/create?type=LOST">
-                <Button size="lg" variant="primary" className="shadow-lg shadow-primary-button/20 hover:shadow-xl hover:shadow-primary-button/30 transition-all">
+                <Button size="lg" variant="primary">
                   I Lost Something
                 </Button>
               </Link>
               <Link to="/posts/create?type=FOUND">
-                <Button size="lg" variant="outline" className="bg-white/50 backdrop-blur-sm border-taupe-border hover:bg-soft-nude transition-all">
+                <Button size="lg" variant="outline">
                   I Found Something
                 </Button>
               </Link>
@@ -49,15 +49,13 @@ export const Landing: React.FC = () => {
 
           {/* Hero Image / Illustration */}
           <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] flex items-center justify-center">
-            {/* Glowing orbs behind image */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-soft-nude/40 rounded-full mix-blend-multiply filter blur-[80px] animate-blob"></div>
-            <div className="absolute top-1/3 right-1/4 w-[60%] h-[60%] bg-light-beige/60 rounded-full mix-blend-multiply filter blur-[80px] animate-blob animation-delay-2000"></div>
+            {/* Background elements removed for flat design */}
             
             {/* Main Image */}
             <img 
               src="/assets/hero.png" 
               alt="Lost and found items connecting" 
-              className="relative z-10 w-full h-full object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-700 ease-out"
+              className="relative z-10 w-full h-full object-contain"
             />
           </div>
         </div>
@@ -68,7 +66,7 @@ export const Landing: React.FC = () => {
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             <div className="flex flex-col items-center">
-              <div className="h-16 w-16 bg-surface border border-taupe-border rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+              <div className="h-16 w-16 bg-surface border border-taupe-border rounded-2xl flex items-center justify-center mb-6">
                 <Search className="h-8 w-8 text-primary-button" />
               </div>
               <h3 className="text-xl font-semibold text-dark-text mb-3">Smart Match Technology</h3>
@@ -78,7 +76,7 @@ export const Landing: React.FC = () => {
             </div>
             
             <div className="flex flex-col items-center">
-              <div className="h-16 w-16 bg-surface border border-taupe-border rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+              <div className="h-16 w-16 bg-surface border border-taupe-border rounded-2xl flex items-center justify-center mb-6">
                 <ShieldCheck className="h-8 w-8 text-primary-button" />
               </div>
               <h3 className="text-xl font-semibold text-dark-text mb-3">Privacy by Default</h3>
@@ -88,7 +86,7 @@ export const Landing: React.FC = () => {
             </div>
             
             <div className="flex flex-col items-center">
-              <div className="h-16 w-16 bg-surface border border-taupe-border rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+              <div className="h-16 w-16 bg-surface border border-taupe-border rounded-2xl flex items-center justify-center mb-6">
                 <HeartHandshake className="h-8 w-8 text-primary-button" />
               </div>
               <h3 className="text-xl font-semibold text-dark-text mb-3">Secure Handover</h3>

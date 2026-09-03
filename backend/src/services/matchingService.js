@@ -124,16 +124,6 @@ const runSmartMatch = async (postId) => {
             notifiedLostUser: true,
             notifiedFoundUser: true,
           });
-
-          // Update post statuses to MATCHED if ACTIVE
-          await ItemPost.updateOne(
-            { _id: lostPostId, status: 'ACTIVE' },
-            { $set: { status: 'MATCHED' } }
-          );
-          await ItemPost.updateOne(
-            { _id: foundPostId, status: 'ACTIVE' },
-            { $set: { status: 'MATCHED' } }
-          );
         }
       }
     } catch (err) {

@@ -212,22 +212,22 @@ const seed = async () => {
 
   const questions = [
     {
-      lostPostId: lostPost._id,
-      createdBy: alex._id,
+      postId: foundPost._id,
+      createdBy: jordan._id,
       question: 'What is inside the coin pocket of the wallet?',
       answerHash: q1Hash,
       order: 0,
     },
     {
-      lostPostId: lostPost._id,
-      createdBy: alex._id,
+      postId: foundPost._id,
+      createdBy: jordan._id,
       question: 'What is in the ID slot of the wallet?',
       answerHash: q2Hash,
       order: 1,
     },
     {
-      lostPostId: lostPost._id,
-      createdBy: alex._id,
+      postId: foundPost._id,
+      createdBy: jordan._id,
       question: 'What is the brand of the wallet?',
       answerHash: q3Hash,
       order: 2,
@@ -236,7 +236,7 @@ const seed = async () => {
 
   for (const q of questions) {
     await VerificationQuestion.findOneAndUpdate(
-      { lostPostId: q.lostPostId, question: q.question },
+      { postId: q.postId, question: q.question },
       q,
       { upsert: true, new: true }
     );
